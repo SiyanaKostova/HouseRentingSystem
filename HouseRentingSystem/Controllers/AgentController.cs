@@ -1,13 +1,11 @@
 ﻿using HouseRentingSystem.Core.Contracts;
 using HouseRentingSystem.Core.Models.Agent;
-using HouseRentingSystem.Extensions;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace HouseRentingSystem.Controllers
 {
-    [Authorize]
-    public class AgentController : BaseController
+	public class AgentController : BaseController
     {
         private readonly IAgentService agentService;
 
