@@ -46,7 +46,7 @@ namespace HouseRentingSystem.Controllers
                 return View(model);
             }
 
-            return RedirectToAction(nameof(HouseController.All), "Houses");
+            return RedirectToAction(nameof(HouseController.All), "House");
 		}
 	}
 }
