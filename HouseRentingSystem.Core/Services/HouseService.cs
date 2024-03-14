@@ -48,7 +48,7 @@ namespace HouseRentingSystem.Core.Services
                     .OrderByDescending(h => h.PricePerMonth),
                 HouseSorting.NotRentedFirst => housesToShow
                     .OrderBy(h => h.RenterId == null)
-                    .OrderByDescending(h => h.Id),
+                    .ThenByDescending(h => h.Id),
                     _ => housesToShow
                     .OrderByDescending(h => h.Id)
             };
