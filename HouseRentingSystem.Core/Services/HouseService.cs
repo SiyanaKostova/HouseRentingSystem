@@ -56,15 +56,7 @@ namespace HouseRentingSystem.Core.Services
             var houses = await housesToShow
                 .Skip((currentPage - 1) * housesPerPage)
                 .Take(housesPerPage)
-                .Select(h => new HouseServiceModel()
-                {
-                    Id = h.Id,
-                    Address = h.Address,
-                    ImageUrl = h.ImageUrl,
-                    IsRented = h.RenterId != null,
-                    PricePerMonth = h.PricePerMonth,
-                    Title = h.Title
-                })
+                .ProjectHouse()
                 .ToListAsync();
 
             int totalHouses = await housesToShow.CountAsync();
@@ -93,6 +85,22 @@ namespace HouseRentingSystem.Core.Services
             return await repository.AllReadOnly<Category>()
                 .Select(c => c.Name)
                 .Distinct()
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<HouseServiceModel>> AllHousesByAgentIdAsync(int agentId)
+        {
+            return await repository.AllReadOnly<House>()
+                .Where(h => h.AgentId == agentId)
+                .ProjectHouse()
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<HouseServiceModel>> AllHousesByUserIdAsync(string userId)
+        {
+            return await repository.AllReadOnly<House>()
+                .Where(h => h.RenterId == userId)
+                .ProjectHouse()
                 .ToListAsync();
         }
 
