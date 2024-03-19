@@ -152,6 +152,12 @@ namespace HouseRentingSystem.Core.Services
                 .AnyAsync(h => h.Id == id);
         }
 
+        public async Task<bool> HasAgentWithIdAsync(int houseId, string userId)
+        {
+            return await repository.AllReadOnly<House>()
+                .AnyAsync(h => h.Id == houseId && h.Agent.UserId == userId);
+        }
+
         public async Task<HouseDetailsServiceModel> HouseDetailsByIdAsync(int id)
         {
             return await repository.AllReadOnly<House>()
