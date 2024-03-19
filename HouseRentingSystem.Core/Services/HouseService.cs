@@ -152,6 +152,29 @@ namespace HouseRentingSystem.Core.Services
                 .AnyAsync(h => h.Id == id);
         }
 
+        public async Task<HouseFormModel?> GetHouseFormModelByIdAsync(int id)
+        {
+            var house = await repository.AllReadOnly<House>()
+                .Where(h => h.Id == id)
+                .Select(h => new HouseFormModel()
+                {
+                    Address = h.Address,
+                    CategoryId = h.CategoryId,
+                    Description = h.Description,
+                    ImageUrl = h.ImageUrl,
+                    PricePerMonth = h.PricePerMonth,
+                    Title = h.Title
+                })
+                .FirstOrDefaultAsync();
+
+            if (house != null)
+            {
+                house.Categories = await AllCategoriesAsync();
+            }
+
+            return house;
+        }
+
         public async Task<bool> HasAgentWithIdAsync(int houseId, string userId)
         {
             return await repository.AllReadOnly<House>()
