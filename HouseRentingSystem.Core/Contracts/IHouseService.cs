@@ -30,5 +30,7 @@ namespace HouseRentingSystem.Core.Contracts
         Task<bool> ExistsAsync(int id);
 
         Task<HouseDetailsServiceModel> HouseDetailsByIdAsync(int id);
+
+        Task EditAsync(int houseId, HouseFormModel model);
     }
 }
