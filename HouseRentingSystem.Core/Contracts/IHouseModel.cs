@@ -1,6 +1,6 @@
 ﻿namespace HouseRentingSystem.Core.Contracts
 {
-    public class IHouseModel
+    public interface IHouseModel
     {
         public string Title { get; set; }
 
