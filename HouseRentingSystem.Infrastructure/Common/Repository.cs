@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HouseRentingSystem.Infrastructure.Common
 {
-	public class Repository : IRepository
+    public class Repository : IRepository
 	{
 		private readonly DbContext context;
 
@@ -41,6 +41,16 @@ namespace HouseRentingSystem.Infrastructure.Common
         public async Task<T?> GetByIdAsync<T>(object id) where T : class
         {
             return await DbSet<T>().FindAsync(id);
+        }
+
+        public async Task DeleteAsync<T>(object id) where T : class
+        {
+            T? entity = await GetByIdAsync<T>(id);
+
+            if (entity != null)
+            {
+                DbSet<T>().Remove(entity);
+            }
         }
     }
 }
