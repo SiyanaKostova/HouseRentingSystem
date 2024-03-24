@@ -1,5 +1,6 @@
 ﻿using HouseRentingSystem.Core.Contracts;
 using HouseRentingSystem.Core.Enumerations;
+using HouseRentingSystem.Core.Exceptions;
 using HouseRentingSystem.Core.Models.Home;
 using HouseRentingSystem.Core.Models.House;
 using HouseRentingSystem.Infrastructure.Common;
@@ -257,6 +258,11 @@ namespace HouseRentingSystem.Core.Services
 
             if (house != null)
             {
+                if (house.RenterId != userId)
+                {
+                    throw new UnauthorizedActionException("The user is not the renter");
+                }
+
                 house.RenterId = null;
                 await repository.SaveChangesAsync();
             }
