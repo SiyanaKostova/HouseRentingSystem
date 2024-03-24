@@ -156,20 +156,50 @@ namespace HouseRentingSystem.Controllers
         }
 
         [HttpGet]
-		public async Task<IActionResult> Delete(int id)
-		{
-			var model = new HouseDetailsViewModel();
+        public async Task<IActionResult> Delete(int id)
+        {
+            if (await houseService.ExistsAsync(id) == false)
+            {
+                return BadRequest();
+            }
 
-			return View(model);
-		}
+            if (await houseService.HasAgentWithIdAsync(id, User.Id()) == false)
+            {
+                return Unauthorized();
+            }
 
-		[HttpPost]
-		public async Task<IActionResult> Delete(HouseDetailsViewModel model)
-		{
-			return RedirectToAction(nameof(All));
-		}
+            var house = await houseService.HouseDetailsByIdAsync(id);
 
-		[HttpPost]
+            var model = new HouseDetailsViewModel()
+            {
+                Id = id,
+                Address = house.Address,
+                ImageUrl = house.ImageUrl,
+                Title = house.Title
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(HouseDetailsViewModel model)
+        {
+            if (await houseService.ExistsAsync(model.Id) == false)
+            {
+                return BadRequest();
+            }
+
+            if (await houseService.HasAgentWithIdAsync(model.Id, User.Id()) == false)
+            {
+                return Unauthorized();
+            }
+
+            await houseService.DeleteAsync(model.Id);
+
+            return RedirectToAction(nameof(All));
+        }
+
+        [HttpPost]
 		public async Task<IActionResult> Rent(int id)
 		{
 			return RedirectToAction(nameof(Mine));
