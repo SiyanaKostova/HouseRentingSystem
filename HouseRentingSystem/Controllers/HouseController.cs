@@ -3,6 +3,7 @@ using HouseRentingSystem.Core.Contracts;
 using HouseRentingSystem.Core.Models.House;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System.Security.Claims;
 
 namespace HouseRentingSystem.Controllers
@@ -223,9 +224,21 @@ namespace HouseRentingSystem.Controllers
         }
 
         [HttpPost]
-		public async Task<IActionResult> Leave(int id)
-		{
-			return RedirectToAction(nameof(Mine));
-		}
-	}
+        public async Task<IActionResult> Leave(int id)
+        {
+            if (await houseService.ExistsAsync(id) == false)
+            {
+                return BadRequest();
+            }
+
+            if (await houseService.IsRentedByIUserWithIdAsync(id, User.Id()) == false)
+            {
+                return Unauthorized();
+            }
+
+            await houseService.LeaveAsync(id, User.Id());
+
+            return RedirectToAction(nameof(All));
+        }
+    }
 }
