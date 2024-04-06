@@ -43,6 +43,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 options.Password.RequireUppercase = false;
 
             })
+            .AddRoles<IdentityRole>()
             .AddEntityFrameworkStores<HouseRentingDbContext>();
 
             return services;
