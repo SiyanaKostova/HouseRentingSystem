@@ -1,5 +1,7 @@
 ﻿using HouseRentingSystem.Core.Contracts;
+using HouseRentingSystem.Core.Models.Admin;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace HouseRentingSystem.Areas.Admin.Controllers
 {
@@ -17,9 +19,17 @@ namespace HouseRentingSystem.Areas.Admin.Controllers
             agentService = _agentService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Mine()
         {
-            return View();
+            var userId = User.Id();
+            int agentId = await agentService.GetAgentIdAsync(userId) ?? 0;
+            var myHouses = new MyHousesViewModel()
+            {
+                AddedHouses = await houseService.AllHousesByAgentIdAsync(agentId),
+                RentedHouses = await houseService.AllHousesByUserIdAsync(userId)
+            };
+
+            return View(myHouses);
         }
     }
 }
