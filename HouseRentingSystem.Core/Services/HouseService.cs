@@ -25,7 +25,8 @@ namespace HouseRentingSystem.Core.Services
             int currentPage = 1,
             int housesPerPage = 1)
         {
-            var housesToShow = repository.AllReadOnly<House>();
+            var housesToShow = repository.AllReadOnly<House>()
+                .Where(h => h.IsApproved);
 
             if (category != null)
             {
@@ -92,6 +93,7 @@ namespace HouseRentingSystem.Core.Services
         public async Task<IEnumerable<HouseServiceModel>> AllHousesByAgentIdAsync(int agentId)
         {
             return await repository.AllReadOnly<House>()
+                .Where(h => h.IsApproved)
                 .Where(h => h.AgentId == agentId)
                 .ProjectHouse()
                 .ToListAsync();
@@ -100,6 +102,7 @@ namespace HouseRentingSystem.Core.Services
         public async Task<IEnumerable<HouseServiceModel>> AllHousesByUserIdAsync(string userId)
         {
             return await repository.AllReadOnly<House>()
+                .Where(h => h.IsApproved)
                 .Where(h => h.RenterId == userId)
                 .ProjectHouse()
                 .ToListAsync();
@@ -162,6 +165,7 @@ namespace HouseRentingSystem.Core.Services
         public async Task<HouseFormModel?> GetHouseFormModelByIdAsync(int id)
         {
             var house = await repository.AllReadOnly<House>()
+                .Where(h => h.IsApproved)
                 .Where(h => h.Id == id)
                 .Select(h => new HouseFormModel()
                 {
@@ -191,6 +195,7 @@ namespace HouseRentingSystem.Core.Services
         public async Task<HouseDetailsServiceModel> HouseDetailsByIdAsync(int id)
         {
             return await repository.AllReadOnly<House>()
+                .Where(h => h.IsApproved)
                 .Where(h => h.Id == id)
                 .Select(h => new HouseDetailsServiceModel()
                 {
@@ -242,6 +247,7 @@ namespace HouseRentingSystem.Core.Services
         {
             return await repository
                 .AllReadOnly<House>()
+                .Where(h => h.IsApproved)
                 .OrderByDescending(h => h.Id)
                 .Take(3)
                 .Select(h => new HouseIndexServiceModel()
