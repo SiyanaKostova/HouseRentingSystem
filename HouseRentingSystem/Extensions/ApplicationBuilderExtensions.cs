@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using static HouseRentingSystem.Core.Constants.AdministratorConstants;
 
-namespace HouseRentingSystem.Extensions
+namespace Microsoft.AspNetCore.Builder
 {
     public static class ApplicationBuilderExtensions
     {
