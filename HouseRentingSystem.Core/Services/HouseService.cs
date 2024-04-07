@@ -198,9 +198,19 @@ namespace HouseRentingSystem.Core.Services
             return house;
         }
 
-        public Task<IEnumerable<HouseServiceModel>> GetUnApprovedAsync()
+        public async Task<IEnumerable<HouseServiceModel>> GetUnApprovedAsync()
         {
-            throw new NotImplementedException();
+            return await repository.AllReadOnly<House>()
+                            .Where(h => h.IsApproved == false)
+                            .Select(h => new HouseServiceModel()
+                            {
+                                Address = h.Address,
+                                Id = h.Id,
+                                ImageUrl = h.ImageUrl,
+                                PricePerMonth = h.PricePerMonth,
+                                Title = h.Title
+                            })
+                            .ToListAsync();
         }
 
         public async Task<bool> HasAgentWithIdAsync(int houseId, string userId)
