@@ -108,6 +108,18 @@ namespace HouseRentingSystem.Core.Services
                 .ToListAsync();
         }
 
+        public async Task ApproveHouseAsync(int houseId)
+        {
+            var house = await repository.GetByIdAsync<House>(houseId);
+
+            if (house != null && house.IsApproved == false)
+            {
+                house.IsApproved = true;
+
+                await repository.SaveChangesAsync();
+            }
+        }
+
         public async Task<bool> CategoryExistsAsync(int categoryId)
         {
             return await repository.AllReadOnly<Category>()
@@ -184,6 +196,11 @@ namespace HouseRentingSystem.Core.Services
             }
 
             return house;
+        }
+
+        public Task<IEnumerable<HouseServiceModel>> GetUnApprovedAsync()
+        {
+            throw new NotImplementedException();
         }
 
         public async Task<bool> HasAgentWithIdAsync(int houseId, string userId)
