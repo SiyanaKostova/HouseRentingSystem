@@ -9,5 +9,9 @@
 		public const string PhoneExistsMessage = "Phone number already exists. Enter another one";
 
 		public const string NoRentsMessage = "You should have no rents to become an agent";
-	}
+
+        public const string UserMessageSuccess = "UserMessageSuccess";
+
+        public const string UserMessageError = "UserMessageError";
+    }
 }
