@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿﻿@using HouseRentingSystem.Core.Constants
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -41,5 +43,17 @@
     <script src="~/lib/toastr/toastr.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
+    @if (TempData[MessageConstants.UserMessageSuccess] != null)
+    {
+        <script defer>
+            message.showSuccess('@TempData[MessageConstants.UserMessageSuccess]');
+        </script>
+    }
+    @if (TempData[MessageConstants.UserMessageError] != null)
+    {
+        <script defer>
+            message.showError('@TempData[MessageConstants.UserMessageSuccess]');
+        </script>
+    }
 </body>
 </html>
